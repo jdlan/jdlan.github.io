@@ -1,50 +1,35 @@
-<!DOCTYPE HTML>
+<! DOCTYPE html>
 <html lang="en">
-    <head>
-        <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-     </head>
-    <body>
-      <p>Guess the random number (1-10)!</p>
-      <p id="guesses">Number of guesses: 0</p>
-      <input type="text" id="guess" name="guess" /><br /><br />
-      <input type="button" id="guessBtn" value="Guess" />
-      <input type="button" id="restartBtn" value="Restart" />
-      <p id="result"></p>
-
-     <py-script>
-       from js import document
-       from pyodide import create_proxy
-      import random
-
-number = random.randrange(0,10)
-guesses = 0
-
-def restart(e):
-  global number, guesses
-  number = random.randrange(0,10)
-  guesses = 0
-  pyscript.write("result", "")
-  pyscript.write("guesses", "Number of guesses: 0")
-
-def guess(e):
-  global guesses
-  guesses += 1
-  inp = Element('guess").element
-  text = inp.value
-  inp.value = ""
-  if (text == str(number)):
-    pyscript.write("result", "Correct! You took" + str(guesses) + " guesses")
-  else:
-    pyscript.write("result", "Wrong!")
-  pyscript.write("guesses", "Number of guesses: " + str(guesses))
-
-    guess_proxy = create_proxy(restart)
-    guess_button = document.getElementById("restartBtn")
-    guess_button.addEventListener("click", restart_proxy)
-
-    restart_proxy = create_proxy(restart)
-    restart_button = document.getElementById("restartBtn")
-    restart_button.addEventListener("click", restart_proxy)
-   </py-script>
-  </body>
-</html>
+<head>
+<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+<script defer src="https://pyscript.net/latest/pyscript. js"></script>
+<style>
+label{
+display:block;
+    </style>
+</head>
+<body>
+<py-config>
+packages = ['numpy']
+</py-config>
+<py-script>
+import numpy as np
+selection = np.random.randint(0,100,1) [0]
+</py-script>
+<form>
+<label for="guess">Guess :< /label><input name="guess" id-"guess">
+<button type="button" id="submit">Check Guess</button>
+<label for="result">Result :< /label><div name="result" id="result"></div>
+</form>
+<py-script>
+from pyscript import when
+@when("click", selector="#submit")
+def check_guess():
+user_guess = int(Element("guess").value)
+result = Element("result")
+if user_guess == selection:
+result.write("Congratulations! You guessed correctly.")
+elif user_guess > selection:
+result.write("Try again! Your guess was too high.")
+else:
+result.write("Try again! Your guess was too low.")
